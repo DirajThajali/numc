@@ -3,17 +3,17 @@ A C and a performance project to build a version of numpy. Numc is not as fast a
 
 ## Contents
 * [Prerequisite](#prerequisite)
-* [Libraries and Technologies used](#libraries-and-technologies-used)
-* [Python-C Interface](#python-c-interface)
-    * [Number Methods](#number-methods)
-    * [Instance Methods](#instance-methods)
-    * [Indexing](#indexing)
 * [numc as a Python Library](#numc-as-a-python-library)
     * [installing numc](#installing-numc)
     * [Importing numc.Matrix](#importing-numcmatrix)
     * [Initializing numc.Matrix](#initializing-numcmatrix)
     * [Instance Attributes](#instance-attributes)
     * [Python/C API Reference](#pythonc-api-reference)
+* [Libraries and Technologies used](#libraries-and-technologies-used)
+* [Python-C Interface](#python-c-interface)
+    * [Number Methods](#number-methods)
+    * [Instance Methods](#instance-methods)
+    * [Indexing](#indexing)
 * [Matrix Operations Speedup](#matrix-operations-speedup)
     * [Add, Sub, Neg and Abs](#add-sub-neg-and-abs)
     * [Mul](#mul)
@@ -22,6 +22,65 @@ A C and a performance project to build a version of numpy. Numc is not as fast a
 
 ## Prerequisite
 In order for numc to work, your local computer must have support for OpenMP library and Intel AVX intrinsics. I also used python version 3.6 throughout the project, so I would recommend you to use the same version just in case to avoid any unexpected bugs.     
+
+## numc as a Python Library
+### Installing `numc`
+* You should be able to install `numc` by running:
+```bash
+$ make      # this will install the numc library. You might need to install make beforehand if you haven't already
+$ python3.6     # this will open up python interpreter on your terminal and you are now ready to import numc just like any other python library!!
+Python 3.6.2
+[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>>   
+```
+* The command above works for me on mac. If you are on a different OS you might need to experment between using `python3` and `python`. If `python3` doesn't works for you then you might need to change line 11 on `Makefile` -- change from `python3` to `python`. And similarly to initialize a python interpreter on terminal use `python` instead of `python3`
+* Upon successful installation, `numc.Matrix` will be initialized and ready to import.
+* You can uninstall `numc` module by running:
+```bash
+$ make unisntall
+```
+### Importing `numc.Matrix`
+* Here are several ways of importing `numc.Matrix`
+```bash
+from numc import Matrix
+
+import numc
+numc.Matrix 
+
+import numc as nc
+nc.Matrix
+```
+### Initializing `numc.Matrix`
+* Here are all different ways of creating `numc.Matrix` objects
+```bash
+>>> import numc as nc
+numc imported!
+>>> nc.Matrix(3, 3) # This creates a 3 * 3 matrix with entries all zeros
+[[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
+>>> nc.Matrix(3, 3, 1) # This creates a 3 * 3 matrix with entries all ones
+[[1.0, 1.0, 1.0], [1.0, 1.0, 1.0], [1.0, 1.0, 1.0]]
+>>> nc.Matrix([[1, 2, 3], [4, 5, 6]]) # This creates a 2 * 3 matrix with first row 1, 2, 3, second row 4, 5, 6
+[[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]
+>>> nc.Matrix(1, 2, [4, 5]) # This creates a 1 * 2 matrix with entries 4, 5
+[4.0, 5.0]
+```
+
+### Instance attributes
+* The matrices and vectors have an attribute shape. For a 2D matrix, the shape is a tuple `(rows, cols)`. For a 1D matrix, it is a one-element tuple of (number of elements, ). Example is given below.
+```bash
+>>> import numc as nc
+numc imported!
+>>> mat = nc.Matrix(3, 3)
+>>> mat.shape
+(3, 3)
+>>> mat = nc.Matrix(3, 1)
+>>> mat.shape
+(3,)
+```
+
+### Python/C API Reference
+If you ever feel lost on how `numc.c`/Python-C interface is implemented, this [full reference manual](https://docs.python.org/3.6/c-api/index.html) is a great resource. 
 
 ## Libraries and Technologies used
 * C
@@ -62,7 +121,7 @@ Python method | C Function | Description
 * Takes in a `numc` matrix and a key to index into the matrix. Below are examples of different cases.
 ```bash
 >>> import numc as nc
-  CS61C Fall 2020 Project 4: numc imported!
+  numc imported!
   >>> a = nc.Matrix(3, 3) 
   >>> a[0] # Key is a single number
   [0.0, 0.0, 0.0]
@@ -89,7 +148,7 @@ Python method | C Function | Description
 * returns a single number if the resulting slice is 1 by 1, otherwise it returns a new matrix that shares its data with its parent matrix. Here are more examples.
 ```bash
   >>> import numc as nc
-  CS61C Fall 2020 Project 4: numc imported!
+  numc imported!
   >>> a = nc.Matrix(3, 3)
   >>> a[0][1]
   0.0
@@ -99,7 +158,7 @@ Python method | C Function | Description
 * More examples. start:stop
 ```bash
 >>> import numc as nc
-CS61C Fall 2020 Project 4: numc imported!
+numc imported!
 >>> a = nc.Matrix(3, 1, [1, 2, 3])
 >>> a[0]
 1.0
@@ -114,7 +173,7 @@ CS61C Fall 2020 Project 4: numc imported!
 * `numc` doesn't support the following
 ```bash
   >>> import numc as nc
-  CS61C Fall 2020 Project 4: numc imported!
+  numc imported!
   >>> a = nc.Matrix(4, 4)
   >>> a[0:4:2] # Step size != 1
   Traceback (most recent call last):
@@ -130,7 +189,7 @@ CS61C Fall 2020 Project 4: numc imported!
 * takes in a `numc` matrix, a `key` to index into the matrix and a value `v` to which to set the new slice. Below are examples of different cases:
 ```bash
 >>> import numc as nc
-CS61C Fall 2020 Project 4: numc imported!
+numc imported!
 >>> a = nc.Matrix(3, 3)
 >>> a[0:1, 0:1] = 0.0 # Resulting slice is 1 by 1
 >>> a[:, 0] = [1, 1, 1] # Resulting slice is 1D
@@ -146,7 +205,7 @@ CS61C Fall 2020 Project 4: numc imported!
 * slices share data with the original matrices which means that changing the values of slices will also change the value of original matrices. Here are some examples:
 ```bash
  >>> import numc as nc
-CS61C Fall 2020 Project 4: numc imported!
+numc imported!
 >>> a = nc.Matrix(2, 2)
 >>> a[0:1, 0:1] = 1.0
 >>> a
@@ -162,7 +221,7 @@ CS61C Fall 2020 Project 4: numc imported!
  * it is also possible to have nested slices, and changing nested slice's data should also change the values of original matrices. For example:
 ```bash
  >>> import numc as nc
-CS61C Fall 2020 Project 4: numc imported!
+numc imported!
 >>> a = nc.Matrix(4, 4)
 >>> b = a[0:3, 0:3]
 >>> c = b[1:3, 1:3]
@@ -174,65 +233,6 @@ CS61C Fall 2020 Project 4: numc imported!
 >>> a
 [[0.0, 0.0, 0.0, 0.0], [0.0, 2.0, 2.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]]
 ```
-
-## numc as a Python Library
-### Installing `numc`
-* You should be able to install `numc` by running:
-```bash
-$ make      # this will install the numc library
-$ python3.6     # this will open up python interpreter on your terminal and you are now ready to import numc just like any other python library!!
-Python 3.6.2 (v3.6.2:5fd33b5926, Jul 16 2017, 20:11:06) 
-[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
-Type "help", "copyright", "credits" or "license" for more information.
->>>   
-```
-* Upon successful installation, `numc.Matrix` will be initialized and ready to import.
-* You can uninstall `numc` module by running:
-```bash
-$ make unisntall
-```
-### Importing `numc.Matrix`
-* Here are several ways of importing `numc.Matrix`
-```bash
-from numc import Matrix
-
-import numc
-numc.Matrix 
-
-import numc as nc
-nc.Matrix
-```
-### Initializing `numc.Matrix`
-* Here are all different ways of creating `numc.Matrix` objects
-```bash
->>> import numc as nc
-CS61C Fall 2020 Project 4: numc imported!
->>> nc.Matrix(3, 3) # This creates a 3 * 3 matrix with entries all zeros
-[[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
->>> nc.Matrix(3, 3, 1) # This creates a 3 * 3 matrix with entries all ones
-[[1.0, 1.0, 1.0], [1.0, 1.0, 1.0], [1.0, 1.0, 1.0]]
->>> nc.Matrix([[1, 2, 3], [4, 5, 6]]) # This creates a 2 * 3 matrix with first row 1, 2, 3, second row 4, 5, 6
-[[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]
->>> nc.Matrix(1, 2, [4, 5]) # This creates a 1 * 2 matrix with entries 4, 5
-[4.0, 5.0]
-```
-
-### Instance attributes
-* The matrices and vectors have an attribute shape. For a 2D matrix, the shape is a tuple `(rows, cols)`. For a 1D matrix, it is a one-element tuple of (number of elements, ). Example is given below.
-```bash
->>> import numc as nc
-CS61C Fall 2020 Project 4: numc imported!
->>> mat = nc.Matrix(3, 3)
->>> mat.shape
-(3, 3)
->>> mat = nc.Matrix(3, 1)
->>> mat.shape
-(3,)
-```
-
-### Python/C API Reference
-If you ever feel lost on how `numc.c`/Python-C interface is implemented, this [full reference manual](https://docs.python.org/3.6/c-api/index.html) is a great resource. 
-
 
 ## Matrix Operations Speedup
 ### Add, Sub, Neg and Abs
