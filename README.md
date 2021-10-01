@@ -24,6 +24,11 @@ A C and a performance project to build a version of numpy. Numc is not as fast a
 In order for numc to work, your local computer must have support for OpenMP library and Intel AVX intrinsics. I also used python version 3.6 throughout the project, so I would recommend you to use the same version just in case to avoid any unexpected bugs.     
 
 ## numc as a Python Library
+### Git clone
+```bash
+$ git clone git@github.com:DirajThajali/numc.git # this will clone this repo
+$ cd numc # go into the working directory
+```
 ### Installing `numc`
 * You should be able to install `numc` by running:
 ```bash
